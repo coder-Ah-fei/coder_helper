@@ -1,0 +1,110 @@
+package {{packageName}}.service.impl;
+
+import {{packageName}}.common.enums.SaveType;
+import {{packageName}}.dto.ResultMap;
+import {{packageName}}.dto.PageMap;
+import {{packageName}}.dto.{{entityNameUp}}Dto;
+import {{packageName}}.form.{{entityNameUp}}Form;
+import {{packageName}}.repository.{{entityNameUp}}Repository;
+import {{packageName}}.service.{{entityNameUp}}Service;
+import {{packageName}}.entity.{{entityNameUp}};
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+/**
+ * 描述：
+ *
+ * @author {{entityNameUp}}
+ */
+@Service
+public class {{entityNameUp}}ServiceImpl implements {{entityNameUp}}Service {
+
+	@Autowired
+	private {{entityNameUp}}Repository {{entityNameLow}}Repository;
+
+	/**
+	 * 获取数据
+	 *
+	 * @param {{entityNameLow}}Form
+	 * @return ResultMap
+	 */
+	@Override
+	public ResultMap list{{entityNameUp}}s({{entityNameUp}}Form {{entityNameLow}}Form){
+        Specification<{{entityNameUp}}> specification = getSpecification({{entityNameLow}}Form);
+
+		List<{{entityNameUp}}> {{entityNameLow}}List;
+        Long count = 0L;
+		if ({{entityNameLow}}Form.getPageNow() == -1) {
+			{{entityNameLow}}List = {{entityNameLow}}Repository.findAll(specification);
+            count = Long.valueOf({{entityNameLow}}List.size());
+		} else {
+			Pageable pageable = PageRequest.of({{entityNameLow}}Form.getPageNow() - 1, {{entityNameLow}}Form.getPageSize());
+			Page<{{entityNameUp}}> {{entityNameLow}}Page = {{entityNameLow}}Repository.findAll(specification, pageable);
+			{{entityNameLow}}List = {{entityNameLow}}Page.getContent();
+           count = {{entityNameLow}}Page.getTotalElements();
+		}
+		List<{{entityNameUp}}Dto> list = new ArrayList< >();
+		{{entityNameUp}}Dto {{entityNameLow}}Dto;
+		for ({{entityNameUp}} {{entityNameLow}} : {{entityNameLow}}List) {
+            {{entityNameLow}}Dto = new {{entityNameUp}}Dto();
+        	BeanUtils.copyProperties({{entityNameLow}}, {{entityNameLow}}Dto);
+
+
+            list.add({{entityNameLow}}Dto);
+		}
+		return new ResultMap< >(ResultMap.SUCCESS_CODE, PageMap.of(count, list));
+	}
+
+
+    /**
+	 * 新增、更新
+	 *
+	 * @param {{entityNameLow}}Form
+	 * @return
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public ResultMap save{{entityNameUp}}({{entityNameUp}}Form {{entityNameLow}}Form) {
+	    {{entityNameUp}} {{entityNameLow}} = null;
+		if ({{entityNameLow}}Form.getId() == null) {
+			{{entityNameLow}} = new {{entityNameUp}}();
+		} else {
+			Optional<{{entityNameUp}}> {{entityNameLow}}Optional = {{entityNameLow}}Repository.findById({{entityNameLow}}Form.getId());
+			if (!{{entityNameLow}}Optional.isPresent()) {
+				return ResultMap.fail("没有找到要修改的数据");
+			}
+			{{entityNameLow}} = {{entityNameLow}}Optional.get();
+		}
+        BeanUtils.copyProperties({{entityNameLow}}Form, {{entityNameLow}});
+        {{entityNameLow}}Repository.save({{entityNameLow}});
+		return ResultMap.success();
+	}
+
+    private Specification getSpecification({{entityNameUp}}Form {{entityNameLow}}Form) {
+		Specification<{{entityNameUp}}> specification = (root, criteriaQuery, criteriaBuilder) -> {
+        //			List<Predicate> pr = new ArrayList< >();
+        //				if (!StringUtils.empty(articleForm.getSectionName())) {
+        //					Join<Object, Object> section = root.join("section");
+        //					pr.add(builder.equal(section.get("sectionName"), articleForm.getSectionName()));
+        //				}
+
+        //			if (!StringUtils.empty(litigationEnvelopeBrandForm.getBrandName())) {
+        //				pr.add(criteriaBuilder.equal(root.get("brandName").as(String.class), litigationEnvelopeBrandForm.getBrandName()));
+        //			}
+        //			criteriaQuery.where(pr.toArray(new Predicate[pr.size()]));
+
+            criteriaQuery.orderBy(criteriaBuilder.desc(root.get("createTime")));
+            return criteriaQuery.getRestriction();
+        };
+		return specification;
+	}
+}

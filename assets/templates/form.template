@@ -1,0 +1,18 @@
+package {{packageName}}.form;
+
+import {{packageName}}.form.basic.BaseForm;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+/**
+ * 描述：
+ *
+ * @author Administrator
+ */
+ @Getter
+ @Setter
+ @Accessors(chain = true)
+public class {{entityNameUp}}Form extends BaseForm {
+    private Long id;
+}

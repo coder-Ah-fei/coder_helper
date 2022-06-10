@@ -1,0 +1,17 @@
+package {{packageName}}.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+/**
+ * 描述：
+ *
+ * @author Administrator
+ */
+ @Getter
+ @Setter
+ @Accessors(chain = true)
+public class {{entityNameUp}}Dto {
+
+}

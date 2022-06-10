@@ -1,0 +1,28 @@
+package {{packageName}}.service;
+
+import {{packageName}}.dto.ResultMap;
+import {{packageName}}.form.{{entityNameUp}}Form;
+
+/**
+ * 描述：
+ *
+ * @author Administrator
+ */
+public interface {{entityNameUp}}Service {
+
+	/**
+	 * 获取数据
+	 *
+	 * @param {{entityNameLow}}Form
+	 * @return ResultMap
+	 */
+	ResultMap list{{entityNameUp}}s({{entityNameUp}}Form {{entityNameLow}}Form);
+
+	/**
+	 * 新增、更新
+	 *
+	 * @param {{entityNameLow}}Form
+	 * @return
+	 */
+	ResultMap save{{entityNameUp}}({{entityNameUp}}Form {{entityNameLow}}Form);
+}

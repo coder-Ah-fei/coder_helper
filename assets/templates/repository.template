@@ -1,0 +1,16 @@
+package {{packageName}}.repository;
+
+import {{packageName}}.entity.{{entityNameUp}};
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.List;
+
+/**
+ * 描述：
+ *
+ * @author Administrator
+ */
+public interface {{entityNameUp}}Repository extends JpaRepository<{{entityNameUp}}, Long>, JpaSpecificationExecutor {
+
+}
