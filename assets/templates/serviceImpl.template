@@ -88,6 +88,14 @@ public class {{entityNameUp}}ServiceImpl implements {{entityNameUp}}Service {
         {{entityNameLow}}Repository.save({{entityNameLow}});
 		return ResultMap.success();
 	}
+	
+    @Override
+    public ResultMap findBy{{entityNameUp}}Id(Long id) {
+        {{entityNameUp}} {{entityNameLow}} = {{entityNameLow}}Repository.findById(id).orElseThrow(() -> new RuntimeException("数据不存在"));
+        {{entityNameUp}}Dto {{entityNameLow}}Dto = new {{entityNameUp}}Dto();
+        BeanUtils.copyProperties({{entityNameLow}}, {{entityNameLow}}Dto);
+        return ResultMap.success("", {{entityNameLow}}Dto);
+    }
 
     private Specification getSpecification({{entityNameUp}}Form {{entityNameLow}}Form) {
 		Specification<{{entityNameUp}}> specification = (root, criteriaQuery, criteriaBuilder) -> {

@@ -25,4 +25,12 @@ public interface {{entityNameUp}}Service {
 	 * @return
 	 */
 	ResultMap save{{entityNameUp}}({{entityNameUp}}Form {{entityNameLow}}Form);
+	
+    /**
+     * 根据id查找
+     *
+     * @param id
+     * @return
+     */
+    ResultMap findBy{{entityNameUp}}Id(Long id);
 }
